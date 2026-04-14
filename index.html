@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Quote of the Day</title>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-53MF1TLXXR"></script>
@@ -12,7 +11,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-53MF1TLXXR');
     </script>
 
@@ -30,9 +28,9 @@
             padding: 20px;
         }
 
-        .quote-container {
+        /* Container styling for both the quote and the about section */
+        .content-container {
             max-width: 600px;
-            /* Creates a smooth fade-in effect */
             animation: fadeIn 1.5s ease-in-out;
         }
 
@@ -47,6 +45,43 @@
             font-size: 1rem;
             color: #777;
             font-weight: bold;
+        }
+
+        /* NEW: Pins the button to the top right of the screen */
+        .nav-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 8px 16px;
+            background-color: transparent;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            color: #777;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #eee;
+            color: #333;
+            border-color: #999;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .troll-text {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .cliffhanger {
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
         }
 
         @keyframes fadeIn {
@@ -65,10 +100,50 @@
 
 <body>
 
-    <div class="quote-container">
+    <button id="top-btn" class="nav-btn" onclick="toggleView()">About Me</button>
+
+    <div id="view-quote" class="content-container">
         <div class="quote">"The only limit to our realization of tomorrow will be our doubts of today."</div>
         <div class="author">— Franklin D. Roosevelt</div>
     </div>
+
+    <div id="view-about" class="content-container hidden">
+        <div class="troll-text">
+            Coming Soon
+        </div>
+        <div class="cliffhanger">
+            check back later.
+        </div>
+    </div>
+
+    <script>
+        // We use a simple toggle to know which page we are on
+        let isAboutView = false;
+
+        function toggleView() {
+            isAboutView = !isAboutView; // Flip the switch
+
+            if (isAboutView) {
+                // Show "About", Hide "Quote", Change button text
+                document.getElementById('view-quote').classList.add('hidden');
+                document.getElementById('view-about').classList.remove('hidden');
+                document.getElementById('top-btn').innerText = '← Back';
+
+                // Fire the tracking event to Google Analytics
+                gtag('event', 'clicked_about_me', {
+                    'event_category': 'engagement',
+                    'event_label': 'User took the bait'
+                });
+                console.log("Hooked one! Event sent to Analytics.");
+
+            } else {
+                // Revert back to the Quote page
+                document.getElementById('view-about').classList.add('hidden');
+                document.getElementById('view-quote').classList.remove('hidden');
+                document.getElementById('top-btn').innerText = 'About Me';
+            }
+        }
+    </script>
 
 </body>
 
