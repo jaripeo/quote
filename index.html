@@ -47,11 +47,27 @@
             font-weight: bold;
         }
 
-        /* NEW: Pins the button to the top right of the screen */
-        .nav-btn {
+        /* NEW: Container to hold both the PFP and the Button */
+        .top-nav {
             position: absolute;
             top: 25px;
             right: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            /* Space between the picture and the button */
+        }
+
+        /* NEW: Styling to make the image an Instagram-style circle */
+        .profile-pic {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .nav-btn {
             padding: 8px 16px;
             background-color: transparent;
             border: 1px solid #ccc;
@@ -100,7 +116,10 @@
 
 <body>
 
-    <button id="top-btn" class="nav-btn" onclick="toggleView()">About Me</button>
+    <div class="top-nav">
+        <img src="pfpWithTejana.png" alt="Profile" class="profile-pic">
+        <button id="top-btn" class="nav-btn" onclick="toggleView()">About Me</button>
+    </div>
 
     <div id="view-quote" class="content-container">
         <div class="quote">"The only limit to our realization of tomorrow will be our doubts of today."</div>
@@ -117,19 +136,16 @@
     </div>
 
     <script>
-        // We use a simple toggle to know which page we are on
         let isAboutView = false;
 
         function toggleView() {
-            isAboutView = !isAboutView; // Flip the switch
+            isAboutView = !isAboutView;
 
             if (isAboutView) {
-                // Show "About", Hide "Quote", Change button text
                 document.getElementById('view-quote').classList.add('hidden');
                 document.getElementById('view-about').classList.remove('hidden');
                 document.getElementById('top-btn').innerText = '← Back';
 
-                // Fire the tracking event to Google Analytics
                 gtag('event', 'clicked_about_me', {
                     'event_category': 'engagement',
                     'event_label': 'User took the bait'
@@ -137,7 +153,6 @@
                 console.log("Hooked one! Event sent to Analytics.");
 
             } else {
-                // Revert back to the Quote page
                 document.getElementById('view-about').classList.add('hidden');
                 document.getElementById('view-quote').classList.remove('hidden');
                 document.getElementById('top-btn').innerText = 'About Me';
